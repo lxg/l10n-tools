@@ -1,0 +1,54 @@
+{
+    "name": "@lxg/l10n-tools",
+    "type": "module",
+    "version": "1.0.0",
+    "description": "Catalog manager for @lxg/l10n, a lightweight translation library. To be installed as dev dependency.",
+    "bin": {
+        "l10n": "l10n.mjs"
+    },
+    "scripts": {
+        "lint": "for script in $(find . -iname '*.mjs' | grep -v -e test.mjs -e node_modules); do npx eslint $script; done",
+        "lint:fix": "for script in $(find . -iname '*.mjs' | grep -v -e test.mjs -e node_modules); do npx eslint $script --fix; done",
+        "test": "jest",
+        "test:coverage": "jest --coverage"
+    },
+    "keywords": [
+        "internationalisation",
+        "i18n",
+        "localization",
+        "l10n",
+        "translation",
+        "translate",
+        "gettext"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lxg/l10n-tools.git"
+    },
+    "author": {
+        "name": "Alexander Günsche",
+        "url": "https://lxg.de/"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "acorn-loose": "^7.1.0",
+        "acorn-walk": "^7.2.0",
+        "ajv": "^6.12.3",
+        "fast-glob": "^3.2.4",
+        "gettext-parser": "^4.0.3"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-plugin-jest": "^23.8.2",
+        "jest": "^25.1.0"
+    },
+    "jest": {
+        "testMatch": [
+            "**/__tests__/**/*.?(m)js?(x)",
+            "**/?(*.)(spec|test).?(m)js?(x)"
+        ],
+        "moduleFileExtensions": [
+            "mjs"
+        ]
+    }
+}
