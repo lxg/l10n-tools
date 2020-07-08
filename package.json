@@ -12,6 +12,10 @@
         "test": "jest",
         "test:coverage": "jest --coverage"
     },
+    "files" : [
+        "lib/",
+        "l10n.mjs"
+    ],
     "keywords": [
         "internationalisation",
         "i18n",
