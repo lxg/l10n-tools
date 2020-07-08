@@ -27,7 +27,7 @@ const messages = getMessages(config.sources, config.instance)
 Object.keys(catalogs).forEach(locale => {
     catalogs[locale] = merge(catalogs[locale], messages, locale)
     fs.existsSync(l10nDir) || fs.mkdirSync(l10nDir, { recursive: true })
-    fs.writeFileSync(`${l10nDir}/${locale}.po`, gettextParser.po.compile(catalogs[locale]).toString())
+    fs.writeFileSync(`${l10nDir}/${locale}.po`, gettextParser.po.compile(catalogs[locale], { foldLength : false }))
 })
 
 // compile translation tables. Each table contains the translations for the files
