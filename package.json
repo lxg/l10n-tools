@@ -37,7 +37,7 @@
     "dependencies": {
         "acorn-loose": "^7.1.0",
         "acorn-walk": "^7.2.0",
-        "ajv": "^6.12.4",
+        "ajv": "^6.12.5",
         "fast-glob": "^3.2.4",
         "gettext-parser": "^4.0.4"
     },
