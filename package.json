@@ -1,7 +1,7 @@
 {
     "name": "@lxg/l10n-tools",
     "type": "module",
-    "version": "1.1.4",
+    "version": "1.2.0",
     "description": "Catalog manager for @lxg/l10n, a lightweight translation library. To be installed as dev dependency.",
     "bin": {
         "l10n": "l10n.mjs"
