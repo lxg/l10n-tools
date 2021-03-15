@@ -36,17 +36,25 @@ Object.keys(catalogs).forEach(locale => {
 
 // compile translation tables. Each table contains the translations for the files
 // specified in the sourceGlobs, with all languages.
-Object.keys(config.targets).forEach(target => {
-    const sourceFiles = []
 
-    config.targets[target].forEach(sourceGlob => {
-        sourceFiles.push(...fg.sync(sourceGlob, { cwd : rootDir }))
-    })
+;(async()=>{
+    for (const target of Object.keys(config.targets)) {
+        const sourceFiles = []
+        const extras = []
 
-    const table = compile(sourceFiles, catalogs)
-    const targetFileName = `${rootDir}/${target}`
-    const targetDir = dirname(targetFileName)
+        config.targets[target].forEach(sourceGlob => {
+            if (sourceGlob.startsWith("l10n:")) {
+                extras.push(sourceGlob.replace(/^.*?:/, ""))
+            } else {
+                sourceFiles.push(...fg.sync(sourceGlob, { cwd : rootDir }))
+            }
+        })
 
-    fs.existsSync(targetDir) || fs.mkdirSync(targetDir, { recursive: true })
-    fs.writeFileSync(targetFileName, JSON.stringify(table, null, 2))
-})
+        const table = await compile(sourceFiles, extras, catalogs)
+        const targetFileName = `${rootDir}/${target}`
+        const targetDir = dirname(targetFileName)
+
+        fs.existsSync(targetDir) || fs.mkdirSync(targetDir, { recursive: true })
+        fs.writeFileSync(targetFileName, JSON.stringify(table, null, 2))
+    }
+})()
