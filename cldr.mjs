@@ -19,8 +19,16 @@ fg.sync("*", { cwd: cldrPath }).forEach(file => fs.unlinkSync(`${cldrPath}/${fil
 const cldrDataPath = `${__dirname}/node_modules/cldr-dates-modern/main`
 const cldrFiles = fg.sync("**/ca-gregorian.json", { cwd: cldrDataPath })
 
+const cldrFirstDay = JSON.parse(fs.readFileSync(`${__dirname}/node_modules/cldr-core/supplemental/weekData.json`))
+    .supplemental.weekData.firstDay
+
+// days in cldrFirstDay are mon,sun … we need numbers however
+const firstDays = { sun: 0, mon: 1, fri: 5, sat: 6 }
+
+
 cldrFiles.forEach(file => {
     const locale = file.replace(/\/.*$/, "")
+    const country = locale.split("-")[1] //.match(/^[A-Z]{2}$/)
     const cldr = JSON.parse(fs.readFileSync(`${cldrDataPath}/${file}`).toString())
 
     const extract = {
@@ -31,51 +39,54 @@ cldrFiles.forEach(file => {
     }
 
     const data = {
+        firstday: {
+            "_\u00041": (firstDays[cldrFirstDay[country]] !== undefined ? firstDays[cldrFirstDay[country]] : 1) + ""
+        },
         days: {
-            "l10n\u0004Monday": extract.days.mon,
-            "l10n\u0004Tuesday": extract.days.tue,
-            "l10n\u0004Wednesday": extract.days.wed,
-            "l10n\u0004Thursday": extract.days.thu,
-            "l10n\u0004Friday": extract.days.fri,
-            "l10n\u0004Saturday": extract.days.sat,
-            "l10n\u0004Sunday": extract.days.sun
+            "_\u0004Monday": extract.days.mon,
+            "_\u0004Tuesday": extract.days.tue,
+            "_\u0004Wednesday": extract.days.wed,
+            "_\u0004Thursday": extract.days.thu,
+            "_\u0004Friday": extract.days.fri,
+            "_\u0004Saturday": extract.days.sat,
+            "_\u0004Sunday": extract.days.sun
         },
         daysShort: {
-            "l10n\u0004Mon": extract.daysShort.mon,
-            "l10n\u0004Tue": extract.daysShort.tue,
-            "l10n\u0004Wed": extract.daysShort.wed,
-            "l10n\u0004Thu": extract.daysShort.thu,
-            "l10n\u0004Fri": extract.daysShort.fri,
-            "l10n\u0004Sat": extract.daysShort.sat,
-            "l10n\u0004Sun": extract.daysShort.sun
+            "_\u0004Mon": extract.daysShort.mon,
+            "_\u0004Tue": extract.daysShort.tue,
+            "_\u0004Wed": extract.daysShort.wed,
+            "_\u0004Thu": extract.daysShort.thu,
+            "_\u0004Fri": extract.daysShort.fri,
+            "_\u0004Sat": extract.daysShort.sat,
+            "_\u0004Sun": extract.daysShort.sun
         },
         months: {
-            "l10n\u0004January": extract.months[1],
-            "l10n\u0004February": extract.months[2],
-            "l10n\u0004March": extract.months[3],
-            "l10n\u0004April": extract.months[4],
-            "l10n\u0004May": extract.months[5],
-            "l10n\u0004June": extract.months[6],
-            "l10n\u0004July": extract.months[7],
-            "l10n\u0004August": extract.months[8],
-            "l10n\u0004September": extract.months[9],
-            "l10n\u0004October": extract.months[10],
-            "l10n\u0004November": extract.months[11],
-            "l10n\u0004December": extract.months[12]
+            "_\u0004January": extract.months[1],
+            "_\u0004February": extract.months[2],
+            "_\u0004March": extract.months[3],
+            "_\u0004April": extract.months[4],
+            "_\u0004May": extract.months[5],
+            "_\u0004June": extract.months[6],
+            "_\u0004July": extract.months[7],
+            "_\u0004August": extract.months[8],
+            "_\u0004September": extract.months[9],
+            "_\u0004October": extract.months[10],
+            "_\u0004November": extract.months[11],
+            "_\u0004December": extract.months[12]
         },
         monthsShort: {
-            "l10n\u0004Jan": extract.monthsShort[1],
-            "l10n\u0004Feb": extract.monthsShort[2],
-            "l10n\u0004Mar": extract.monthsShort[3],
-            "l10n\u0004Apr": extract.monthsShort[4],
-            "l10n\u0004May": extract.monthsShort[5],
-            "l10n\u0004Jun": extract.monthsShort[6],
-            "l10n\u0004Jul": extract.monthsShort[7],
-            "l10n\u0004Aug": extract.monthsShort[8],
-            "l10n\u0004Sep": extract.monthsShort[9],
-            "l10n\u0004Oct": extract.monthsShort[10],
-            "l10n\u0004Nov": extract.monthsShort[11],
-            "l10n\u0004Dec": extract.monthsShort[12]
+            "_\u0004Jan": extract.monthsShort[1],
+            "_\u0004Feb": extract.monthsShort[2],
+            "_\u0004Mar": extract.monthsShort[3],
+            "_\u0004Apr": extract.monthsShort[4],
+            "_\u0004May": extract.monthsShort[5],
+            "_\u0004Jun": extract.monthsShort[6],
+            "_\u0004Jul": extract.monthsShort[7],
+            "_\u0004Aug": extract.monthsShort[8],
+            "_\u0004Sep": extract.monthsShort[9],
+            "_\u0004Oct": extract.monthsShort[10],
+            "_\u0004Nov": extract.monthsShort[11],
+            "_\u0004Dec": extract.monthsShort[12]
         }
     }
 
