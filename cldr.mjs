@@ -79,5 +79,5 @@ cldrFiles.forEach(file => {
         }
     }
 
-    fs.writeFileSync(`${cldrPath}/${locale}.mjs`, `export default ${JSON.stringify(data)}`)
+    fs.writeFileSync(`${cldrPath}/${locale}.json`, JSON.stringify(data))
 })
