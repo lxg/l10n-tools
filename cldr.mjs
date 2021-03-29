@@ -6,25 +6,46 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+
+//
+// prepare environment
+//
+
 const cldrPath = `${__dirname}/cldr`
 
 if (!fs.existsSync(cldrPath)) {
     fs.mkdirSync(cldrPath)
 }
 
-// delete old files
 fg.sync("*", { cwd: cldrPath }).forEach(file => fs.unlinkSync(`${cldrPath}/${file}`))
 
-// create new files
-const cldrDataPath = `${__dirname}/node_modules/cldr-dates-modern/main`
-const cldrFiles = fg.sync("**/ca-gregorian.json", { cwd: cldrDataPath })
+
+//
+// create firstday file
+//
 
 const cldrFirstDay = JSON.parse(fs.readFileSync(`${__dirname}/node_modules/cldr-core/supplemental/weekData.json`))
     .supplemental.weekData.firstDay
 
 // days in cldrFirstDay are mon,sun … we need numbers however
-const firstDays = { sun: 0, mon: 1, fri: 5, sat: 6 }
+const firstDays = { sun: "0", mon: "1", fri: "5", sat: "6" }
 
+Object.keys(cldrFirstDay).forEach(country => {
+    if (country.match(/^[A-Z]{2}$/))
+        cldrFirstDay[country] = firstDays[cldrFirstDay[country]]
+    else
+        delete cldrFirstDay[country]
+})
+
+fs.writeFileSync(`${cldrPath}/_firstday.json`, JSON.stringify(cldrFirstDay))
+
+
+//
+// create new language files
+//
+
+const cldrDataPath = `${__dirname}/node_modules/cldr-dates-modern/main`
+const cldrFiles = fg.sync("**/ca-gregorian.json", { cwd: cldrDataPath })
 
 cldrFiles.forEach(file => {
     const locale = file.replace(/\/.*$/, "")
@@ -39,9 +60,6 @@ cldrFiles.forEach(file => {
     }
 
     const data = {
-        firstday: {
-            "_\u00041": (firstDays[cldrFirstDay[country]] !== undefined ? firstDays[cldrFirstDay[country]] : 1) + ""
-        },
         days: {
             "_\u0004Monday": extract.days.mon,
             "_\u0004Tuesday": extract.days.tue,
