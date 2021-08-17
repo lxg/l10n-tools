@@ -1,3 +1,10 @@
+# ARCHIVED: This repository is now obsolete as these tools have been integrated into the [@lxg/10n](https://github.com/lxg/l10n) library directly, starting with version `2.0`.
+
+## This repository will remain online and readable for reference.
+
+---
+
+
 # l10n-tools – catalog tools for the lxg/l10n library
 
 This package is a collection of tools to work with the [@lxg/l10n library](https://github.com/lxg/l10n).
